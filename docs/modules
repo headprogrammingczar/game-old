@@ -1,0 +1,7 @@
+-- module structure
+
+Game.Imports -- external imports and types module
+Game.Types -- all types
+Game.UI.Base -- basic functions for building the UI
+Game.Data.Base -- basic functions for manipulating game state
+
