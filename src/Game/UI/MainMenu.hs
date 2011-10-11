@@ -28,6 +28,10 @@ saveAction gp = do
   dialog <- fileChooserDialogNew Nothing Nothing FileChooserActionSave [("Save", ResponseAccept), ("Cancel", ResponseReject)]
   fileChooserSetDoOverwriteConfirmation dialog True
   fileChooserSetLocalOnly dialog True
+  path <- takeDirectory . saveGamePath <$> readIORef gp
+  when (path /= "") $ do
+    fileChooserSetCurrentFolder dialog path
+    return ()
   response <- dialogRun dialog
   uri' <- fileChooserGetFilename dialog
   widgetDestroy dialog

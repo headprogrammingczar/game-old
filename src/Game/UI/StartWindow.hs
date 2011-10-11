@@ -46,11 +46,16 @@ loadGame gp = do
   dialog <- fileChooserDialogNew Nothing Nothing FileChooserActionOpen [("Open", ResponseAccept), ("Cancel", ResponseReject)]
   fileChooserSetLocalOnly dialog True
   response <- dialogRun dialog
-  uri' <- fileChooserGetFilename dialog
-  widgetDestroy dialog
-  case uri' of
-    Just uri -> readState gp uri
-    _ -> return False
+  case response of
+    ResponseAccept -> do
+      uri' <- fileChooserGetFilename dialog
+      widgetDestroy dialog
+      case uri' of
+        Just uri -> readState gp uri
+        _ -> return False
+    _ -> do
+      widgetDestroy dialog
+      return False
 
 quitGame :: IO ()
 quitGame = mainQuit
