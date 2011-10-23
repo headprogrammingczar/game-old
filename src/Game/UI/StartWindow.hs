@@ -4,6 +4,9 @@ import Game.Imports
 import Game.UI.Base
 import Game.UI.MainWindow
 import Game.Data.Save
+import Game.UI.Save
+import Game.UI.Actions.New
+import Game.UI.Actions.Quit
 
 runStartWindow :: GameRef -> IO ()
 runStartWindow gp = do
@@ -21,8 +24,9 @@ startWindowLayout window gp = do
   afterClicked newButton $ do
     safeDestroy window dieid
     newGame gp
+    runMainWindow gp
   afterClicked loadButton $ do
-    loaded <- loadGame gp
+    loaded <- loadAction gp
     case loaded of
       False -> putStrLn "this error message needs improvement"
       True -> do
@@ -36,27 +40,4 @@ startWindowLayout window gp = do
   containerAdd box quitButton
   containerAdd window box
   return ()
-
-newGame :: GameRef -> IO ()
-newGame gp = do
-  runMainWindow gp
-
-loadGame :: GameRef -> IO Bool
-loadGame gp = do
-  dialog <- fileChooserDialogNew Nothing Nothing FileChooserActionOpen [("Open", ResponseAccept), ("Cancel", ResponseReject)]
-  fileChooserSetLocalOnly dialog True
-  response <- dialogRun dialog
-  case response of
-    ResponseAccept -> do
-      uri' <- fileChooserGetFilename dialog
-      widgetDestroy dialog
-      case uri' of
-        Just uri -> readState gp uri
-        _ -> return False
-    _ -> do
-      widgetDestroy dialog
-      return False
-
-quitGame :: IO ()
-quitGame = mainQuit
 

@@ -3,6 +3,8 @@ module Game.UI.Save where
 import Game.Imports
 import Game.UI.Base
 import Game.Data.Save
+import System.Posix.Files
+import System.FilePath hiding (FilePath)
 
 -- show a window to load game; return True if game was loaded
 loadAction :: GameRef -> IO Bool

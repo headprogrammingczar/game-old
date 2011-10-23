@@ -1,7 +1,10 @@
 module Game.Data.Save where
 
 import Game.Imports
+import System.Posix.Files
+import System.FilePath hiding (FilePath)
 
+-- write gp to file
 writeState :: GameRef -> String -> IO ()
 writeState gp file = do
   game' <- readIORef gp
@@ -12,6 +15,7 @@ writeState gp file = do
   hClose h
   return ()
 
+-- read gp from file
 readState :: GameRef -> String -> IO Bool
 readState gp file = do
   -- read game from file
@@ -26,5 +30,4 @@ readState gp file = do
           let game = game' {saveGamePath = file}
           writeIORef gp game
           return True
-        _ -> return False
 

@@ -1,5 +1,5 @@
-import Game.UI.StartWindow
 import Game.Imports
+import Game.UI.StartWindow
 
 main = do
   initGUI
